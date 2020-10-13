@@ -1,0 +1,8 @@
+enchantments:
+  CHANNELING: 1
+potions:
+  JUMP:
+    extendable: true
+    upgradable: true
+items:
+  - MAP
