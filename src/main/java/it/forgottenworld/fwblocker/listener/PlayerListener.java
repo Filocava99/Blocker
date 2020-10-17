@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class PlayerListener implements Listener {
@@ -36,10 +38,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPotionBrewed(BrewEvent event) {
         for (ItemStack itemStack : event.getContents().getContents()) {
-            if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.LINGERING_POTION || itemStack.getType() == Material.SPLASH_POTION) {
-                if (isPotionBanned(itemStack)) {
-                    event.setCancelled(true);
-                }
+            if (isPotionBanned(itemStack)) {
+                event.setCancelled(true);
             }
         }
     }
@@ -47,23 +47,21 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerCrafting(CraftItemEvent event) {
         ItemStack itemStack = event.getRecipe().getResult();
-        String materialName = itemStack.getType().toString();
-        if (instance.getPluginConfig().getConfig().getStringList("items").contains(materialName)) {
+        if (isItemBanned(itemStack)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
-        if (mainHandItem.getType() == Material.POTION || mainHandItem.getType() == Material.LINGERING_POTION || mainHandItem.getType() == Material.SPLASH_POTION) {
-            if (isPotionBanned(mainHandItem)) {
-                player.getInventory().remove(mainHandItem);
-            }
-        }
-        removeBannedEnchants(mainHandItem);
+        checkMainHand(event.getPlayer());
+    }
 
+    @EventHandler
+    public void onPlayerDamaged(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            checkEquippedItems((Player) event.getEntity());
+        }
     }
 
     private boolean isPotionBanned(ItemStack potion) {
@@ -96,4 +94,37 @@ public class PlayerListener implements Listener {
         }
         return false;
     }
+
+    private boolean isItemBanned(ItemStack itemStack) {
+        return instance.getPluginConfig().getConfig().getStringList("items").contains(itemStack.getType().toString());
+    }
+
+    private void checkMainHand(Player player) {
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        if (isItemBanned(mainHandItem)) {
+            player.getInventory().remove(mainHandItem);
+        } else if (mainHandItem.getType() == Material.POTION || mainHandItem.getType() == Material.LINGERING_POTION || mainHandItem.getType() == Material.SPLASH_POTION) {
+            if (isPotionBanned(mainHandItem)) {
+                player.getInventory().remove(mainHandItem);
+            }
+        } else {
+            removeBannedEnchants(mainHandItem);
+        }
+    }
+
+    private void checkEquippedItems(Player player) {
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        if (armor != null) {
+            Arrays.stream(armor).forEach(itemStack -> {
+                if (itemStack != null) {
+                    if (isItemBanned(itemStack)) {
+                        player.getInventory().remove(itemStack);
+                    } else {
+                        removeBannedEnchants(itemStack);
+                    }
+                }
+            });
+        }
+    }
+
 }
