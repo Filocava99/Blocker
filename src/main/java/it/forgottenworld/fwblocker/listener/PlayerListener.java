@@ -1,22 +1,21 @@
 package it.forgottenworld.fwblocker.listener;
 
 import it.forgottenworld.fwblocker.FWBlocker;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
-import java.lang.management.BufferPoolMXBean;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class PlayerListener implements Listener {
 
@@ -28,44 +27,18 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerEnchant(EnchantItemEvent event) {
-        Set<Enchantment> enchantmentsToBeRemoved = new HashSet<>();
-        event.getEnchantsToAdd().forEach((key, value) -> {
-            ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments");
-            assert enchantmentsSection != null;
-            if (enchantmentsSection.contains(key.toString())) {
-                int enchantmentLevel = enchantmentsSection.getInt(key.toString());
-                if (value >= enchantmentLevel) {
-                    enchantmentsToBeRemoved.add(key);
-                }
-            }
-        });
-        Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
-            enchantmentsToBeRemoved.forEach(enchantment -> event.getItem().removeEnchantment(enchantment));
-        },20L);
+        event.setCancelled(true);
+        Map<Enchantment, Integer> enchantmentsToAdd = event.getEnchantsToAdd();
+        enchantmentsToAdd.entrySet().removeIf(entry -> isEnchantBanned(entry.getKey(), entry.getValue()));
+        event.getItem().addEnchantments(enchantmentsToAdd);
     }
 
     @EventHandler
     public void onPotionBrewed(BrewEvent event) {
         for (ItemStack itemStack : event.getContents().getContents()) {
             if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.LINGERING_POTION || itemStack.getType() == Material.SPLASH_POTION) {
-                PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-                ConfigurationSection potionsSection = instance.getPluginConfig().getConfig().getConfigurationSection("potions");
-                PotionData potionData = potionMeta.getBasePotionData();
-                assert potionsSection != null;
-                if (potionsSection.contains(potionData.getType().toString())) {
-                    ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
-                    assert potionSection != null;
-                    if (potionSection.getBoolean("all")) {
-                        event.setCancelled(true);
-                        return;
-                    } else if (potionSection.getBoolean("extendable") && potionData.isExtended()) {
-                        event.setCancelled(true);
-                        return;
-                    }
-                    if (potionSection.getBoolean("upgradable") && potionData.isUpgraded()) {
-                        event.setCancelled(true);
-                        return;
-                    }
+                if (isPotionBanned(itemStack)) {
+                    event.setCancelled(true);
                 }
             }
         }
@@ -78,5 +51,49 @@ public class PlayerListener implements Listener {
         if (instance.getPluginConfig().getConfig().getStringList("items").contains(materialName)) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerInteraction(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
+        if (mainHandItem.getType() == Material.POTION || mainHandItem.getType() == Material.LINGERING_POTION || mainHandItem.getType() == Material.SPLASH_POTION) {
+            if (isPotionBanned(mainHandItem)) {
+                player.getInventory().remove(mainHandItem);
+            }
+        }
+        removeBannedEnchants(mainHandItem);
+
+    }
+
+    private boolean isPotionBanned(ItemStack potion) {
+        PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+        ConfigurationSection potionsSection = instance.getPluginConfig().getConfig().getConfigurationSection("potions");
+        PotionData potionData = potionMeta.getBasePotionData();
+        assert potionsSection != null;
+        if (potionsSection.contains(potionData.getType().toString())) {
+            ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
+            assert potionSection != null;
+            return potionSection.getBoolean("all") || potionSection.getBoolean("extendable") && potionData.isExtended() || potionSection.getBoolean("upgradable") && potionData.isUpgraded();
+        }
+        return false;
+    }
+
+    private void removeBannedEnchants(ItemStack itemStack) {
+        itemStack.getEnchantments().forEach((key, value) -> {
+            if (isEnchantBanned(key, value)) {
+                itemStack.removeEnchantment(key);
+            }
+        });
+    }
+
+    private boolean isEnchantBanned(Enchantment enchantment, int value) {
+        ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments");
+        assert enchantmentsSection != null;
+        if (enchantmentsSection.contains(enchantment.toString())) {
+            int enchantmentLevel = enchantmentsSection.getInt(enchantment.toString());
+            return value >= enchantmentLevel;
+        }
+        return false;
     }
 }
