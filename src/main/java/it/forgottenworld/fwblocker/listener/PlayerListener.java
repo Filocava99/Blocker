@@ -1,6 +1,7 @@
 package it.forgottenworld.fwblocker.listener;
 
 import it.forgottenworld.fwblocker.FWBlocker;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
+import java.lang.management.BufferPoolMXBean;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +39,9 @@ public class PlayerListener implements Listener {
                 }
             }
         });
-        enchantmentsToBeRemoved.forEach(enchantment -> event.getItem().removeEnchantment(enchantment));
+        Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
+            enchantmentsToBeRemoved.forEach(enchantment -> event.getItem().removeEnchantment(enchantment));
+        },20L);
     }
 
     @EventHandler
