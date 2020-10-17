@@ -51,11 +51,14 @@ public class PlayerListener implements Listener {
                 if (potionsSection.contains(potionData.getType().toString())) {
                     ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
                     assert potionSection != null;
-                    if (!potionSection.getBoolean("extendable") && potionData.isExtended()) {
+                    if (potionSection.getBoolean("all")) {
+                        event.setCancelled(true);
+                        return;
+                    } else if (potionSection.getBoolean("extendable") && potionData.isExtended()) {
                         event.setCancelled(true);
                         return;
                     }
-                    if (!potionSection.getBoolean("upgradable") && potionData.isUpgraded()) {
+                    if (potionSection.getBoolean("upgradable") && potionData.isUpgraded()) {
                         event.setCancelled(true);
                         return;
                     }
@@ -65,10 +68,10 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerCrafting(CraftItemEvent event){
+    public void onPlayerCrafting(CraftItemEvent event) {
         ItemStack itemStack = event.getRecipe().getResult();
         String materialName = itemStack.getType().toString();
-        if(instance.getPluginConfig().getConfig().getStringList("items").contains(materialName)){
+        if (instance.getPluginConfig().getConfig().getStringList("items").contains(materialName)) {
             event.setCancelled(true);
         }
     }

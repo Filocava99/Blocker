@@ -2,6 +2,7 @@ enchantments:
   CHANNELING: 1
 potions:
   JUMP:
+    all: true
     extendable: true
     upgradable: true
 items:
