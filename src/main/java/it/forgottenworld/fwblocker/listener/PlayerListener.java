@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
@@ -54,7 +55,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
-        checkMainHand(event.getPlayer());
+        checkHands(event.getPlayer());
     }
 
     @EventHandler
@@ -99,16 +100,28 @@ public class PlayerListener implements Listener {
         return instance.getPluginConfig().getConfig().getStringList("items").contains(itemStack.getType().toString());
     }
 
-    private void checkMainHand(Player player) {
-        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
-        if (isItemBanned(mainHandItem)) {
-            player.getInventory().remove(mainHandItem);
-        } else if (mainHandItem.getType() == Material.POTION || mainHandItem.getType() == Material.LINGERING_POTION || mainHandItem.getType() == Material.SPLASH_POTION) {
-            if (isPotionBanned(mainHandItem)) {
-                player.getInventory().remove(mainHandItem);
+    private void checkHands(Player player){
+        checkMainHand(player.getInventory());
+        checkOffHand(player.getInventory());
+    }
+
+    private void checkMainHand(PlayerInventory playerInventory){
+        checkItem(playerInventory, playerInventory.getItemInMainHand());
+    }
+
+    private void checkOffHand(PlayerInventory playerInventory){
+        checkItem(playerInventory, playerInventory.getItemInOffHand());
+    }
+
+    private void checkItem(PlayerInventory playerInventory, ItemStack itemStack){
+        if (isItemBanned(itemStack)) {
+            playerInventory.remove(itemStack);
+        } else if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.LINGERING_POTION || itemStack.getType() == Material.SPLASH_POTION) {
+            if (isPotionBanned(itemStack)) {
+                playerInventory.remove(itemStack);
             }
         } else {
-            removeBannedEnchants(mainHandItem);
+            removeBannedEnchants(itemStack);
         }
     }
 
