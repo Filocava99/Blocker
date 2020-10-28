@@ -1,9 +1,9 @@
-enchantments:
+enchantments-banned:
   CHANNELING: 1
-potions:
+potions-banned:
   JUMP:
-    all: true
-    extendable: true
-    upgradable: true
-items:
+    ban-only-normal: true
+    ban-only-extendable: true
+    ban-only-upgradable: true
+items-banned:
   - MAP
