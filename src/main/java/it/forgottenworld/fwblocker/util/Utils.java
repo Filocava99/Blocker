@@ -22,13 +22,13 @@ public class Utils {
 
     public boolean isPotionBanned(ItemStack potion) {
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
-        ConfigurationSection potionsSection = instance.getPluginConfig().getConfig().getConfigurationSection("potions");
+        ConfigurationSection potionsSection = instance.getPluginConfig().getConfig().getConfigurationSection("potions-banned");
         PotionData potionData = potionMeta.getBasePotionData();
         assert potionsSection != null;
         if (potionsSection.contains(potionData.getType().toString())) {
             ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
             assert potionSection != null;
-            return potionSection.getBoolean("all") || potionSection.getBoolean("extendable") && potionData.isExtended() || potionSection.getBoolean("upgradable") && potionData.isUpgraded();
+            return potionSection.getBoolean("ban-only-normal") || potionSection.getBoolean("ban-only-extendable") && potionData.isExtended() || potionSection.getBoolean("ban-only-upgradable") && potionData.isUpgraded();
         }
         return false;
     }
@@ -42,7 +42,7 @@ public class Utils {
     }
 
     public boolean isEnchantBanned(Enchantment enchantment, int value) {
-        ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments");
+        ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments-banned");
         assert enchantmentsSection != null;
         if (enchantmentsSection.contains(enchantment.toString())) {
             int enchantmentLevel = enchantmentsSection.getInt(enchantment.toString());
@@ -52,7 +52,7 @@ public class Utils {
     }
 
     public boolean isItemBanned(ItemStack itemStack) {
-        return instance.getPluginConfig().getConfig().getStringList("items").contains(itemStack.getType().toString());
+        return instance.getPluginConfig().getConfig().getStringList("items-banned").contains(itemStack.getType().toString());
     }
 
     public void checkHands(Player player){
