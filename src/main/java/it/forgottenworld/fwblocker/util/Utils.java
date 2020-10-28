@@ -1,6 +1,7 @@
 package it.forgottenworld.fwblocker.util;
 
 import it.forgottenworld.fwblocker.FWBlocker;
+import it.forgottenworld.fwblocker.config.Config;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -11,6 +12,8 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class Utils {
 
@@ -18,6 +21,34 @@ public class Utils {
 
     public Utils(FWBlocker instance) {
         this.instance = instance;
+    }
+
+    public boolean isPotion(ItemStack itemStack){
+        return  itemStack.getType() == Material.POTION || itemStack.getType() == Material.LINGERING_POTION || itemStack.getType() == Material.SPLASH_POTION;
+    }
+
+    public void banPotion(ItemStack itemStack){
+        Config config = instance.getPluginConfig();
+        PotionMeta potionMeta = (PotionMeta)itemStack.getItemMeta();
+        PotionData potionData = potionMeta.getBasePotionData();
+        boolean isUpgraded = potionData.isUpgraded();
+        boolean isExtended = potionData.isExtended();
+        ConfigurationSection potionSection = Objects.requireNonNull(config.getConfig().getConfigurationSection("potions-banned")).createSection(potionData.getType().toString());
+        if(!isExtended && !isUpgraded){
+            potionSection.set("ban-only-normal",true);
+        }else{
+            potionSection.set("ban-only-normal",false);
+        }
+        potionSection.set("ban-only-extended",isExtended);
+        potionSection.set("ban-only-upgraded",isUpgraded);
+    }
+
+    public void banItem(ItemStack itemStack){
+        Config config = instance.getPluginConfig();
+        List<String> bannedItems = config.getConfig().getStringList("items-banned");
+        bannedItems.add(itemStack.getType().toString());
+        config.getConfig().set("banned-items",bannedItems);
+        config.save();
     }
 
     public boolean isPotionBanned(ItemStack potion) {
@@ -28,7 +59,7 @@ public class Utils {
         if (potionsSection.contains(potionData.getType().toString())) {
             ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
             assert potionSection != null;
-            return potionSection.getBoolean("ban-only-normal") || potionSection.getBoolean("ban-only-extendable") && potionData.isExtended() || potionSection.getBoolean("ban-only-upgradable") && potionData.isUpgraded();
+            return potionSection.getBoolean("ban-only-normal") || potionSection.getBoolean("ban-only-extended") && potionData.isExtended() || potionSection.getBoolean("ban-only-upgraded") && potionData.isUpgraded();
         }
         return false;
     }
@@ -71,7 +102,7 @@ public class Utils {
     private void checkItem(PlayerInventory playerInventory, ItemStack itemStack){
         if (isItemBanned(itemStack)) {
             playerInventory.remove(itemStack);
-        } else if (itemStack.getType() == Material.POTION || itemStack.getType() == Material.LINGERING_POTION || itemStack.getType() == Material.SPLASH_POTION) {
+        } else if (isPotion(itemStack)) {
             if (isPotionBanned(itemStack)) {
                 playerInventory.remove(itemStack);
             }

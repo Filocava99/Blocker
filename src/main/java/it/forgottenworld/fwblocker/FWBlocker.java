@@ -19,7 +19,7 @@ public final class FWBlocker extends JavaPlugin {
         try {
             config = new Config("config.yml", this);
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
-            Objects.requireNonNull(getCommand("fwblocker")).setExecutor(new BlockerCommand());
+            Objects.requireNonNull(getCommand("fwblocker")).setExecutor(new BlockerCommand(this));
         } catch (IOException e) {
             e.printStackTrace();
         }
