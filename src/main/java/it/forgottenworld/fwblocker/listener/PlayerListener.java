@@ -36,8 +36,10 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPotionBrewed(BrewEvent event) {
         for (ItemStack itemStack : event.getContents().getContents()) {
-            if (utils.isPotionBanned(itemStack)) {
-                event.setCancelled(true);
+            if(itemStack != null){
+                if (utils.isPotionBanned(itemStack)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

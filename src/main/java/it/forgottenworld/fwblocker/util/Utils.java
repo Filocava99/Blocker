@@ -41,13 +41,14 @@ public class Utils {
         }
         potionSection.set("ban-only-extended",isExtended);
         potionSection.set("ban-only-upgraded",isUpgraded);
+        config.save();
     }
 
     public void banItem(ItemStack itemStack){
         Config config = instance.getPluginConfig();
         List<String> bannedItems = config.getConfig().getStringList("items-banned");
         bannedItems.add(itemStack.getType().toString());
-        config.getConfig().set("banned-items",bannedItems);
+        config.getConfig().set("items-banned",bannedItems);
         config.save();
     }
 
@@ -57,6 +58,7 @@ public class Utils {
         if(enchantSection != null){
             enchantSection.set(enchantment.toString(), level);
         }
+        config.save();
     }
 
     public boolean isPotionBanned(ItemStack potion) {
