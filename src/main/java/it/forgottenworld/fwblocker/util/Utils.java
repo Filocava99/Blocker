@@ -51,6 +51,14 @@ public class Utils {
         config.save();
     }
 
+    public void banEnchant(Enchantment enchantment, int level){
+        Config config = instance.getPluginConfig();
+        ConfigurationSection enchantSection = config.getConfig().getConfigurationSection("enchantments-banned");
+        if(enchantSection != null){
+            enchantSection.set(enchantment.toString(), level);
+        }
+    }
+
     public boolean isPotionBanned(ItemStack potion) {
         PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
         ConfigurationSection potionsSection = instance.getPluginConfig().getConfig().getConfigurationSection("potions-banned");

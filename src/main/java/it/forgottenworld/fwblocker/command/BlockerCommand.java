@@ -32,15 +32,26 @@ public class BlockerCommand implements CommandExecutor {
         }else if(args[0].equalsIgnoreCase("potion")){
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("list")) {
-                    blockerCommandMethods.printBannedItemsList(sender);
+                    blockerCommandMethods.printBannedPotionsList(sender);
                 } else {
                     blockerCommandMethods.printHelp(sender);
                 }
             } else {
                 blockerCommandMethods.banPotion(sender);
             }
+        }else if(args[0].equalsIgnoreCase("enchant")){
+            if(args.length > 1){
+                if(args[1].equalsIgnoreCase("list")){
+                    blockerCommandMethods.printBannedEnchantmentsList(sender);
+                }else if(args.length > 2){
+                    blockerCommandMethods.banEnchantment(sender, args);
+                }else{
+                    blockerCommandMethods.printHelp(sender);
+                }
+            }else{
+                blockerCommandMethods.printHelp(sender);
+            }
         }
         return true;
     }
-
 }

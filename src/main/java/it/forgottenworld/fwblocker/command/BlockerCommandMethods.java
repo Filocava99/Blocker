@@ -3,7 +3,9 @@ package it.forgottenworld.fwblocker.command;
 import it.forgottenworld.fwblocker.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,6 +27,14 @@ public class BlockerCommandMethods {
     }
 
     protected void printBannedItemsList(CommandSender sender) {
+
+    }
+
+    protected void printBannedPotionsList(CommandSender sender){
+
+    }
+
+    protected void printBannedEnchantmentsList(CommandSender sender){
 
     }
 
@@ -53,6 +63,16 @@ public class BlockerCommandMethods {
             }
         } else {
             sender.sendMessage(ChatColor.DARK_RED + "Only players can run this command!");
+        }
+    }
+
+    protected void banEnchantment(CommandSender sender, String[] args){
+        try {
+            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(args[1]));
+            int level = Integer.parseInt(args[2]);
+            utils.banEnchant(enchantment,level);
+        }catch (Exception e){
+            sender.sendMessage(ChatColor.RED + "Invalid parameters!");
         }
     }
 
