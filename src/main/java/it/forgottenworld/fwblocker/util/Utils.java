@@ -116,9 +116,11 @@ public class Utils {
 
     private void checkItem(PlayerInventory playerInventory, ItemStack itemStack){
         if (isItemBanned(itemStack)) {
+            playBanEffect(playerInventory.getHolder().getLocation());
             playerInventory.remove(itemStack);
         } else if (isPotion(itemStack)) {
             if (isPotionBanned(itemStack)) {
+                playBanEffect(playerInventory.getHolder().getLocation());
                 playerInventory.remove(itemStack);
             }
         } else {
@@ -132,6 +134,7 @@ public class Utils {
             Arrays.stream(armor).forEach(itemStack -> {
                 if (itemStack != null) {
                     if (isItemBanned(itemStack)) {
+                        playBanEffect(player.getLocation());
                         player.getInventory().remove(itemStack);
                     } else {
                         removeBannedEnchants(itemStack);
@@ -143,6 +146,6 @@ public class Utils {
 
     public void playBanEffect(Location location){
         location.getWorld().playEffect(location, Effect.ANVIL_BREAK,1);
-        location.getWorld().spawnParticle(Particle.BARRIER,location,4);
+        location.getWorld().spawnParticle(Particle.BARRIER,location.add(0,1.5,0),4);
     }
 }

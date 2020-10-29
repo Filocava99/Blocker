@@ -45,7 +45,7 @@ public class PlayerListener implements Listener {
             BrewingStand brewingStand = event.getContents().getHolder();
             assert brewingStand != null;
             for (ItemStack itemStack : brewingStand.getInventory().getContents()) {
-                if (utils.isPotion(itemStack)) {
+                if (itemStack != null && utils.isPotion(itemStack)) {
                     if (utils.isPotionBanned(itemStack)) {
                         brewingStand.getInventory().remove(itemStack);
                         itemStack.setType(Material.AIR);
@@ -70,7 +70,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
         if (!event.getPlayer().hasPermission("fwb.bypass")) {
-            System.out.println("triggered");
             utils.checkHands(event.getPlayer());
         }
     }
