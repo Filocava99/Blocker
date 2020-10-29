@@ -2,7 +2,10 @@ package it.forgottenworld.fwblocker.util;
 
 import it.forgottenworld.fwblocker.FWBlocker;
 import it.forgottenworld.fwblocker.config.Config;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -10,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -134,5 +139,10 @@ public class Utils {
                 }
             });
         }
+    }
+
+    public void playBanEffect(Location location){
+        location.getWorld().playEffect(location, Effect.ANVIL_BREAK,1);
+        location.getWorld().spawnParticle(Particle.BARRIER,location,4);
     }
 }

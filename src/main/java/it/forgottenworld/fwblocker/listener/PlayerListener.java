@@ -2,6 +2,8 @@ package it.forgottenworld.fwblocker.listener;
 
 import it.forgottenworld.fwblocker.FWBlocker;
 import it.forgottenworld.fwblocker.util.Utils;
+import org.bukkit.*;
+import org.bukkit.block.BrewingStand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +31,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerEnchant(EnchantItemEvent event) {
-        if(!event.getEnchanter().hasPermission("fwb.bypass")){
+        if (!event.getEnchanter().hasPermission("fwb.bypass")) {
             event.setCancelled(true);
             Map<Enchantment, Integer> enchantmentsToAdd = event.getEnchantsToAdd();
             enchantmentsToAdd.entrySet().removeIf(entry -> utils.isEnchantBanned(entry.getKey(), entry.getValue()));
@@ -39,21 +41,28 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPotionBrewed(BrewEvent event) {
-        for (ItemStack itemStack : event.getContents().getContents()) {
-            if (itemStack != null && utils.isPotion(itemStack)) {
-                if (utils.isPotionBanned(itemStack)) {
-                    event.setCancelled(true);
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            BrewingStand brewingStand = event.getContents().getHolder();
+            assert brewingStand != null;
+            for (ItemStack itemStack : brewingStand.getInventory().getContents()) {
+                if (utils.isPotion(itemStack)) {
+                    if (utils.isPotionBanned(itemStack)) {
+                        brewingStand.getInventory().remove(itemStack);
+                        itemStack.setType(Material.AIR);
+                        utils.playBanEffect(brewingStand.getLocation());
+                    }
                 }
             }
-        }
+        }, 1);
     }
 
     @EventHandler
     public void onPlayerCrafting(CraftItemEvent event) {
-        if(!event.getWhoClicked().hasPermission("fwb.bypass")){
+        if (!event.getWhoClicked().hasPermission("fwb.bypass")) {
             ItemStack itemStack = event.getRecipe().getResult();
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
+
             }
         }
     }
@@ -61,6 +70,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
         if (!event.getPlayer().hasPermission("fwb.bypass")) {
+            System.out.println("triggered");
             utils.checkHands(event.getPlayer());
         }
     }
@@ -70,9 +80,7 @@ public class PlayerListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (!player.hasPermission("fwb.bypass")) {
-                {
-                    utils.checkEquippedItems((Player) event.getEntity());
-                }
+                utils.checkEquippedItems((Player) event.getEntity());
             }
         }
     }
@@ -83,6 +91,7 @@ public class PlayerListener implements Listener {
             ItemStack itemStack = new ItemStack(event.getBlock().getType());
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
+                utils.playBanEffect(event.getBlock().getLocation());
             }
         }
     }
@@ -93,6 +102,7 @@ public class PlayerListener implements Listener {
             ItemStack itemStack = new ItemStack(event.getBlock().getType());
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
+                utils.playBanEffect(event.getBlock().getLocation());
             }
         }
     }
