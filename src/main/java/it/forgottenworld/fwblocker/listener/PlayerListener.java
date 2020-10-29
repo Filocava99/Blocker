@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
             ItemStack itemStack = event.getRecipe().getResult();
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
-
+                utils.playBanEffect(event.getWhoClicked().getLocation());
             }
         }
     }
