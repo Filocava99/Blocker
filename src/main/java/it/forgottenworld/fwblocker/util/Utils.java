@@ -146,6 +146,6 @@ public class Utils {
 
     public void playBanEffect(Location location){
         location.getWorld().playEffect(location, Effect.ANVIL_BREAK,1);
-        location.getWorld().spawnParticle(Particle.BARRIER,location.add(0,1.5,0),4);
+        location.getWorld().spawnParticle(Particle.BARRIER,location.add(0.5,1.5,0.5),4);
     }
 }
