@@ -54,7 +54,11 @@ public class BlockCommandMethods {
             textComponent.setBold(true);
             componentBuilder.append(ChatColor.YELLOW + bannedItemsList.get(i)).append("    ").append(textComponent).append("\n");
         }
-        componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
+        componentBuilder.append(ChatColor.GREEN + "-------------- ");
+        if(currentPage > 1){
+            componentBuilder.append(previousPageComponent);
+        }
+        componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
         sender.sendMessage(componentBuilder.create());
     }
 
@@ -80,7 +84,11 @@ public class BlockCommandMethods {
             textComponent.setBold(true);
             componentBuilder.append(ChatColor.YELLOW + potionInfo[0] + " " + potionInfo[1].toUpperCase()).append("    ").append(textComponent).append("\n");
         }
-        componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
+        componentBuilder.append(ChatColor.GREEN + "-------------- ");
+        if(currentPage > 1){
+            componentBuilder.append(previousPageComponent);
+        }
+        componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
         sender.sendMessage(componentBuilder.create());
     }
 
@@ -106,7 +114,11 @@ public class BlockCommandMethods {
             textComponent.setBold(true);
             componentBuilder.append(ChatColor.YELLOW + enchantInfo[0] + " " + enchantInfo[1].toUpperCase()).append("    ").append(textComponent).append("\n");
         }
-        componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
+        componentBuilder.append(ChatColor.GREEN + "-------------- ");
+        if(currentPage > 1){
+            componentBuilder.append(previousPageComponent);
+        }
+        componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
         sender.sendMessage(componentBuilder.create());
     }
 
