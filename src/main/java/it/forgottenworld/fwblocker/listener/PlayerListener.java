@@ -31,7 +31,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerEnchant(EnchantItemEvent event) {
-        if (!event.getEnchanter().hasPermission("fwb.bypass")) {
+        if (!event.getEnchanter().hasPermission("fwblocker.bypass")) {
             event.setCancelled(true);
             Map<Enchantment, Integer> enchantmentsToAdd = event.getEnchantsToAdd();
             enchantmentsToAdd.entrySet().removeIf(entry -> utils.isEnchantBanned(entry.getKey(), entry.getValue()));
@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerCrafting(CraftItemEvent event) {
-        if (!event.getWhoClicked().hasPermission("fwb.bypass")) {
+        if (!event.getWhoClicked().hasPermission("fwblocker.bypass")) {
             ItemStack itemStack = event.getRecipe().getResult();
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteraction(PlayerInteractEvent event) {
-        if (!event.getPlayer().hasPermission("fwb.bypass")) {
+        if (!event.getPlayer().hasPermission("fwblocker.bypass")) {
             utils.checkHands(event.getPlayer());
         }
     }
@@ -78,7 +78,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDamaged(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (!player.hasPermission("fwb.bypass")) {
+            if (!player.hasPermission("fwblocker.bypass")) {
                 utils.checkEquippedItems((Player) event.getEntity());
             }
         }
@@ -86,7 +86,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!event.getPlayer().hasPermission("fwb.bypass")) {
+        if (!event.getPlayer().hasPermission("fwblocker.bypass")) {
             ItemStack itemStack = new ItemStack(event.getBlock().getType());
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);
@@ -97,7 +97,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!event.getPlayer().hasPermission("fwb.bypass")) {
+        if (!event.getPlayer().hasPermission("fwblocker.bypass")) {
             ItemStack itemStack = new ItemStack(event.getBlock().getType());
             if (utils.isItemBanned(itemStack)) {
                 event.setCancelled(true);

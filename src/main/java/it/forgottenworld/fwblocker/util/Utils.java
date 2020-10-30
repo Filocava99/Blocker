@@ -16,9 +16,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Utils {
 
@@ -63,6 +61,38 @@ public class Utils {
         if(enchantSection != null){
             enchantSection.set(enchantment.toString(), level);
         }
+        config.save();
+    }
+
+    public void unbanItem(ItemStack itemStack){
+        Config config = instance.getPluginConfig();
+        List<String> bannedItems = config.getConfig().getStringList("items-banned");
+        bannedItems.remove(itemStack.getType().toString());
+        config.getConfig().set("items-banned",bannedItems);
+        config.save();
+    }
+
+    public void unbanPotion(PotionType type, String version){
+        Config config = instance.getPluginConfig();
+        ConfigurationSection potionSection = Objects.requireNonNull(config.getConfig().getConfigurationSection("potions-banned")).getConfigurationSection(type.toString());
+        if(potionSection != null){
+            if(version.equalsIgnoreCase("normal")){
+                potionSection.set("ban-only-normal", false);
+            }else if(version.equalsIgnoreCase("extended")){
+                potionSection.set("ban-only-extended",false);
+            }else if(version.equalsIgnoreCase("upgraded")){
+                potionSection.set("ban-only-upgraded",false);
+            }
+            if(!potionSection.getBoolean("ban-only-normal") && !potionSection.getBoolean("ban-only-extended") && !potionSection.getBoolean("ban-only-upgraded")){
+                config.getConfig().getConfigurationSection("potions-banned").set(type.toString(), null);
+            }
+            config.save();
+        }
+    }
+
+    public void unbanEnchant(Enchantment enchantment){
+        Config config = instance.getPluginConfig();
+        config.getConfig().getConfigurationSection("enchantments-banned").set(enchantment.toString(), null);
         config.save();
     }
 
@@ -147,5 +177,43 @@ public class Utils {
     public void playBanEffect(Location location){
         location.getWorld().playEffect(location, Effect.ANVIL_BREAK,1);
         location.getWorld().spawnParticle(Particle.BARRIER,location.add(0.5,1.5,0.5),4);
+    }
+
+    public List<String> getBannedItems(){
+        return instance.getPluginConfig().getConfig().getStringList("items-banned");
+    }
+
+    public List<String> getBannedPotions(){
+        List<String> bannedPotionsList = new ArrayList<>();
+        Config config = instance.getPluginConfig();
+        ConfigurationSection potionsSection = config.getConfig().getConfigurationSection("potions-banned");
+        assert potionsSection != null;
+        Set<String> potions = potionsSection.getKeys(false);
+        potions.forEach(potionType -> {
+            ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionType);
+            assert potionSection != null;
+            if(potionSection.getBoolean("ban-only-normal")){
+                bannedPotionsList.add(potionType + "-normal");
+            }
+            if(potionSection.getBoolean("ban-only-extended")){
+                bannedPotionsList.add(potionType + "-extended");
+            }
+            if(potionSection.getBoolean("ban-only-upgraded")){
+                bannedPotionsList.add(potionType + "-upgraded");
+            }
+        });
+        return bannedPotionsList;
+    }
+
+    public List<String> getBannedEnchantments(){
+        List<String> bannedEnchantmentsList = new ArrayList<>();
+        Config config = instance.getPluginConfig();
+        ConfigurationSection enchantmentsSection = config.getConfig().getConfigurationSection("enchantments-banned");
+        assert enchantmentsSection != null;
+        Set<String> enchantmentsSectionKeys = enchantmentsSection.getKeys(false);
+        enchantmentsSectionKeys.forEach(enchantment -> {
+            bannedEnchantmentsList.add(enchantment+"-"+enchantmentsSection.getInt(enchantment));
+        });
+        return bannedEnchantmentsList;
     }
 }

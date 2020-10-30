@@ -7,9 +7,9 @@ authors: [ tigierrei ]
 description: Plugin made for ForgottenWorld with the scope of blocking specific items, potions and enchants
 website: https://forgottenworld.it
 commands:
-  fwblocker:
-    aliases:
-      - fwb
-      - block
-    permission: fwb.*
+  block:
+    permission: fwblocker.block
+    default: op
+  unblock:
+    permission: fwblocker.unblock
     default: op

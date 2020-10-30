@@ -7,49 +7,49 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-public class BlockerCommand implements CommandExecutor {
+public class BlockCommand implements CommandExecutor {
 
-    private final BlockerCommandMethods blockerCommandMethods;
+    private final BlockCommandMethods blockCommandMethods;
 
-    public BlockerCommand(FWBlocker instance) {
-        blockerCommandMethods = new BlockerCommandMethods(new Utils(instance));
+    public BlockCommand(FWBlocker instance) {
+        blockCommandMethods = new BlockCommandMethods(new Utils(instance));
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
-            blockerCommandMethods.printHelp(sender);
+            blockCommandMethods.printHelp(sender);
         } else if (args[0].equalsIgnoreCase("item")) {
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("list")) {
-                    blockerCommandMethods.printBannedItemsList(sender);
+                    blockCommandMethods.printBannedItemsList(sender, args);
                 } else {
-                    blockerCommandMethods.printHelp(sender);
+                    blockCommandMethods.printHelp(sender);
                 }
             } else {
-                blockerCommandMethods.banItem(sender);
+                blockCommandMethods.banItem(sender);
             }
         }else if(args[0].equalsIgnoreCase("potion")){
             if (args.length > 1) {
                 if (args[1].equalsIgnoreCase("list")) {
-                    blockerCommandMethods.printBannedPotionsList(sender);
+                    blockCommandMethods.printBannedPotionsList(sender,args);
                 } else {
-                    blockerCommandMethods.printHelp(sender);
+                    blockCommandMethods.printHelp(sender);
                 }
             } else {
-                blockerCommandMethods.banPotion(sender);
+                blockCommandMethods.banPotion(sender);
             }
         }else if(args[0].equalsIgnoreCase("enchant")){
             if(args.length > 1){
                 if(args[1].equalsIgnoreCase("list")){
-                    blockerCommandMethods.printBannedEnchantmentsList(sender);
+                    blockCommandMethods.printBannedEnchantmentsList(sender, args);
                 }else if(args.length > 2){
-                    blockerCommandMethods.banEnchantment(sender, args);
+                    blockCommandMethods.banEnchantment(sender, args);
                 }else{
-                    blockerCommandMethods.printHelp(sender);
+                    blockCommandMethods.printHelp(sender);
                 }
             }else{
-                blockerCommandMethods.printHelp(sender);
+                blockCommandMethods.printHelp(sender);
             }
         }
         return true;
