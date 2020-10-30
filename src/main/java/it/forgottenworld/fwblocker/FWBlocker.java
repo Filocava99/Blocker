@@ -1,6 +1,7 @@
 package it.forgottenworld.fwblocker;
 
 import it.forgottenworld.fwblocker.command.BlockCommand;
+import it.forgottenworld.fwblocker.command.UnblockCommand;
 import it.forgottenworld.fwblocker.config.Config;
 import it.forgottenworld.fwblocker.listener.PlayerListener;
 import org.bukkit.Bukkit;
@@ -19,7 +20,8 @@ public final class FWBlocker extends JavaPlugin {
         try {
             config = new Config("config.yml", this);
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
-            Objects.requireNonNull(getCommand("fwblocker")).setExecutor(new BlockCommand(this));
+            Objects.requireNonNull(getCommand("block")).setExecutor(new BlockCommand(this));
+            Objects.requireNonNull(getCommand("unblock")).setExecutor(new UnblockCommand(this));
         } catch (IOException e) {
             e.printStackTrace();
         }
