@@ -59,7 +59,7 @@ public class Utils {
         Config config = instance.getPluginConfig();
         ConfigurationSection enchantSection = config.getConfig().getConfigurationSection("enchantments-banned");
         if(enchantSection != null){
-            enchantSection.set(enchantment.toString(), level);
+            enchantSection.set(enchantment.getKey().getKey(), level);
         }
         config.save();
     }
@@ -92,7 +92,7 @@ public class Utils {
 
     public void unbanEnchant(Enchantment enchantment){
         Config config = instance.getPluginConfig();
-        config.getConfig().getConfigurationSection("enchantments-banned").set(enchantment.toString(), null);
+        config.getConfig().getConfigurationSection("enchantments-banned").set(enchantment.getKey().getKey(), null);
         config.save();
     }
 
