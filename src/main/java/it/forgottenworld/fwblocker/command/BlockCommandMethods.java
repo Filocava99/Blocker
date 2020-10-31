@@ -176,7 +176,7 @@ public class BlockCommandMethods {
     }
 
     private void noMoreElementsToShowAlert(CommandSender sender, ComponentBuilder componentBuilder, TextComponent previousPageComponent) {
-        sender.sendMessage(ChatColor.YELLOW + "Nothing more to display...");
+        componentBuilder.append(ChatColor.YELLOW + "Nothing more to display...");
         sender.sendMessage(componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(" --------------").create());
     }
 
