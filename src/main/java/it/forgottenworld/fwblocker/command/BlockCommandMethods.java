@@ -55,7 +55,7 @@ public class BlockCommandMethods {
             componentBuilder.append(ChatColor.YELLOW + bannedItemsList.get(i)).append("    ").append(textComponent).append("\n");
         }
         componentBuilder.append(ChatColor.GREEN + "-------------- ");
-        if(currentPage > 1){
+        if (currentPage > 1) {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
@@ -85,7 +85,7 @@ public class BlockCommandMethods {
             componentBuilder.append(ChatColor.YELLOW + potionInfo[0] + " " + potionInfo[1].toUpperCase()).append("    ").append(textComponent).append("\n");
         }
         componentBuilder.append(ChatColor.GREEN + "-------------- ");
-        if(currentPage > 1){
+        if (currentPage > 1) {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
@@ -115,7 +115,7 @@ public class BlockCommandMethods {
             componentBuilder.append(ChatColor.YELLOW + enchantInfo[0] + " " + enchantInfo[1].toUpperCase()).append("    ").append(textComponent).append("\n");
         }
         componentBuilder.append(ChatColor.GREEN + "-------------- ");
-        if(currentPage > 1){
+        if (currentPage > 1) {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
@@ -177,7 +177,7 @@ public class BlockCommandMethods {
 
     private void noMoreElementsToShowAlert(CommandSender sender, ComponentBuilder componentBuilder, TextComponent previousPageComponent) {
         componentBuilder.append(ChatColor.YELLOW + "Nothing more to display...\n");
-        sender.sendMessage(componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(" --------------").create());
+        sender.sendMessage(componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(ChatColor.GREEN + " --------------").create());
     }
 
 }
