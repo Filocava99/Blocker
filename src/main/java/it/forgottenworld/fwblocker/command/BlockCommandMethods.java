@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 
 import java.util.List;
 
@@ -143,7 +144,8 @@ public class BlockCommandMethods {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             if (utils.isPotion(mainHand)) {
                 utils.banPotion(mainHand);
-                sender.sendMessage(ChatColor.YELLOW + mainHand.getItemMeta().getDisplayName() + ChatColor.GREEN + " has been banned");
+                String potionName = ((PotionMeta)mainHand.getItemMeta()).getBasePotionData().getType().name();
+                sender.sendMessage(ChatColor.YELLOW + potionName + ChatColor.GREEN + " has been banned");
             } else {
                 sender.sendMessage(ChatColor.RED + "You must hold a potion in the main hand to ban it!");
             }
@@ -157,7 +159,7 @@ public class BlockCommandMethods {
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(args[1]));
             int level = Integer.parseInt(args[2]);
             utils.banEnchant(enchantment, level);
-            sender.sendMessage(ChatColor.YELLOW + enchantment.toString() + " " + level + ChatColor.GREEN + " has been banned");
+            sender.sendMessage(ChatColor.YELLOW + enchantment.getKey().getKey() + " " + level + ChatColor.GREEN + " has been banned");
         } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Invalid parameters!");
         }

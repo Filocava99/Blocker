@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
@@ -36,14 +35,19 @@ public class Utils {
         PotionData potionData = potionMeta.getBasePotionData();
         boolean isUpgraded = potionData.isUpgraded();
         boolean isExtended = potionData.isExtended();
-        ConfigurationSection potionSection = Objects.requireNonNull(config.getConfig().getConfigurationSection("potions-banned")).createSection(potionData.getType().toString());
+        ConfigurationSection potionSection = Objects.requireNonNull(config.getConfig().getConfigurationSection("potions-banned")).getConfigurationSection(potionData.getType().toString());
+        if(potionSection == null){
+            potionSection = Objects.requireNonNull(config.getConfig().getConfigurationSection("potions-banned")).createSection(potionData.getType().toString());
+        }
         if(!isExtended && !isUpgraded){
             potionSection.set("ban-only-normal",true);
-        }else{
-            potionSection.set("ban-only-normal",false);
         }
-        potionSection.set("ban-only-extended",isExtended);
-        potionSection.set("ban-only-upgraded",isUpgraded);
+        if(isExtended){
+            potionSection.set("ban-only-extended",isExtended);
+        }
+        if(isUpgraded){
+            potionSection.set("ban-only-upgraded",isUpgraded);
+        }
         config.save();
     }
 
@@ -120,7 +124,7 @@ public class Utils {
     public boolean isEnchantBanned(Enchantment enchantment, int value) {
         ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments-banned");
         assert enchantmentsSection != null;
-        if (enchantmentsSection.contains(enchantment.toString())) {
+        if (enchantmentsSection.contains(enchantment.getKey().getKey())) {
             int enchantmentLevel = enchantmentsSection.getInt(enchantment.toString());
             return value >= enchantmentLevel;
         }

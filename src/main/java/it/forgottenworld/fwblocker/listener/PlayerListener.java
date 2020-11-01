@@ -71,6 +71,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteraction(PlayerInteractEvent event) {
         if (!event.getPlayer().hasPermission("fwblocker.bypass")) {
             utils.checkHands(event.getPlayer());
+            utils.checkEquippedItems(event.getPlayer());
         }
     }
 
