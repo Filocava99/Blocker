@@ -108,7 +108,15 @@ public class Utils {
         if (potionsSection.contains(potionData.getType().toString())) {
             ConfigurationSection potionSection = potionsSection.getConfigurationSection(potionData.getType().toString());
             assert potionSection != null;
-            return potionSection.getBoolean("ban-only-normal") || potionSection.getBoolean("ban-only-extended") && potionData.isExtended() || potionSection.getBoolean("ban-only-upgraded") && potionData.isUpgraded();
+            boolean isUpgraded = potionData.isUpgraded();
+            boolean isExtended = potionData.isExtended();
+            if(!isExtended && !isUpgraded){
+                return potionSection.getBoolean("ban-only-normal");
+            }else if(isExtended){
+                return potionSection.getBoolean("ban-only-extended");
+            }else if(isUpgraded){
+                return potionSection.getBoolean("ban-only-upgraded");
+            }
         }
         return false;
     }
@@ -125,7 +133,7 @@ public class Utils {
         ConfigurationSection enchantmentsSection = instance.getPluginConfig().getConfig().getConfigurationSection("enchantments-banned");
         assert enchantmentsSection != null;
         if (enchantmentsSection.contains(enchantment.getKey().getKey())) {
-            int enchantmentLevel = enchantmentsSection.getInt(enchantment.toString());
+            int enchantmentLevel = enchantmentsSection.getInt(enchantment.getKey().getKey());
             return value >= enchantmentLevel;
         }
         return false;

@@ -12,8 +12,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -104,6 +106,14 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
                 utils.playBanEffect(event.getBlock().getLocation());
             }
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event){
+        if(utils.isItemBanned(event.getItemDrop().getItemStack())){
+            event.setCancelled(true);
+            event.getPlayer().getInventory().remove(event.getItemDrop().getItemStack());
         }
     }
 }
