@@ -83,6 +83,7 @@ public class PlayerListener implements Listener {
             Player player = (Player) event.getEntity();
             if (!player.hasPermission("fwblocker.bypass")) {
                 utils.checkEquippedItems((Player) event.getEntity());
+
             }
         }
     }

@@ -7,3 +7,4 @@ potions-banned:
     ban-only-upgraded: true
 items-banned:
   - MAP
+netherite-knockback: false
