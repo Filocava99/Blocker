@@ -161,11 +161,20 @@ public class Utils {
     private void checkItem(PlayerInventory playerInventory, ItemStack itemStack) {
         if (isItemBanned(itemStack)) {
             playBanEffect(playerInventory.getHolder().getLocation());
-            playerInventory.remove(itemStack);
+            if(playerInventory.getItemInOffHand().equals(itemStack)){
+                playerInventory.setItemInOffHand(new ItemStack(Material.AIR,1));
+            }else{
+                playerInventory.remove(itemStack);
+            }
         } else if (isPotion(itemStack)) {
             if (isPotionBanned(itemStack)) {
                 playBanEffect(playerInventory.getHolder().getLocation());
-                playerInventory.remove(itemStack);
+                if(playerInventory.getItemInOffHand().equals(itemStack)){
+                    itemStack.setType(Material.AIR);
+                    playerInventory.setItemInOffHand(new ItemStack(Material.AIR,1));
+                }else{
+                    playerInventory.remove(itemStack);
+                }
             }
         } else {
             removeBannedEnchants(itemStack);

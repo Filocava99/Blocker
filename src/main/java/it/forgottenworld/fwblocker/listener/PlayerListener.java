@@ -13,11 +13,16 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.Map;
 
@@ -115,6 +120,13 @@ public class PlayerListener implements Listener {
         if(utils.isItemBanned(event.getItemDrop().getItemStack())){
             event.setCancelled(true);
             event.getPlayer().getInventory().remove(event.getItemDrop().getItemStack());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPotionSplash(PotionSplashEvent event){
+        if(utils.isPotionBanned(event.getPotion().getItem())){
+            event.setCancelled(true);
         }
     }
 }
