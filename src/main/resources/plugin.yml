@@ -1,15 +1,15 @@
-name: FWBlocker
-version: @version@
-main: it.forgottenworld.fwblocker.FWBlocker
-api-version: 1.16
-prefix: FWBlocker
+name: Blocker
+version: 1.0.0
+main: it.filippocavallari.blocker.Blocker
+api-version: 1.19
+prefix: Blocker
 authors: [ tigierrei ]
-description: Plugin made for ForgottenWorld with the scope of blocking specific items, potions and enchants
+description: A simple Spigot plugin to block specific items, enchants and potions
 website: https://forgottenworld.it
 commands:
   block:
-    permission: fwblocker.block
+    permission: blocker.block
     default: op
   unblock:
-    permission: fwblocker.unblock
+    permission: blocker.unblock
     default: op
