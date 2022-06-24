@@ -1,7 +1,7 @@
-package it.forgottenworld.fwblocker.command;
+package it.filippocavallari.blocker.command;
 
-import it.forgottenworld.fwblocker.FWBlocker;
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.util.Utils;
+import it.filippocavallari.blocker.Blocker;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,7 +11,7 @@ public class UnblockCommand implements CommandExecutor {
 
     private final UnblockCommandsMethods unblockCommandsMethods;
 
-    public UnblockCommand(FWBlocker plugin) {
+    public UnblockCommand(Blocker plugin) {
         unblockCommandsMethods = new UnblockCommandsMethods(new Utils(plugin));
     }
 

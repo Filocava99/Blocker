@@ -1,6 +1,6 @@
-package it.forgottenworld.fwblocker.command;
+package it.filippocavallari.blocker.command;
 
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

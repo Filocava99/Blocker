@@ -1,6 +1,6 @@
-package it.forgottenworld.fwblocker.command.tabcompleters;
+package it.filippocavallari.blocker.command.tabcompleters;
 
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

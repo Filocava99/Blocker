@@ -1,6 +1,6 @@
-package it.forgottenworld.fwblocker.command;
+package it.filippocavallari.blocker.command;
 
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.util.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -60,7 +60,7 @@ public class BlockCommandMethods {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
-        sender.sendMessage(componentBuilder.create());
+        sender.spigot().sendMessage(componentBuilder.create());
     }
 
     protected void printBannedPotionsList(CommandSender sender, String[] args) {
@@ -90,7 +90,7 @@ public class BlockCommandMethods {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
-        sender.sendMessage(componentBuilder.create());
+        sender.spigot().sendMessage(componentBuilder.create());
     }
 
     protected void printBannedEnchantmentsList(CommandSender sender, String[] args) {
@@ -120,7 +120,7 @@ public class BlockCommandMethods {
             componentBuilder.append(previousPageComponent);
         }
         componentBuilder.append(" ").append(nextPageComponent).append(ChatColor.GREEN + " --------------");
-        sender.sendMessage(componentBuilder.create());
+        sender.spigot().sendMessage(componentBuilder.create());
     }
 
     protected void banItem(CommandSender sender) {
@@ -179,7 +179,7 @@ public class BlockCommandMethods {
 
     private void noMoreElementsToShowAlert(CommandSender sender, ComponentBuilder componentBuilder, TextComponent previousPageComponent) {
         componentBuilder.append(ChatColor.YELLOW + "Nothing more to display...\n");
-        sender.sendMessage(componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(ChatColor.GREEN + " --------------").create());
+        sender.spigot().sendMessage(componentBuilder.append(ChatColor.GREEN + "-------------- ").append(previousPageComponent).append(ChatColor.GREEN + " --------------").create());
     }
 
 }

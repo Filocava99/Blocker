@@ -1,12 +1,12 @@
-package it.forgottenworld.fwblocker;
+package it.filippocavallari.blocker;
 
-import it.forgottenworld.fwblocker.command.BlockCommand;
-import it.forgottenworld.fwblocker.command.UnblockCommand;
-import it.forgottenworld.fwblocker.command.tabcompleters.BlockCommandTabCompleter;
-import it.forgottenworld.fwblocker.command.tabcompleters.UnblockCommandTabCompleter;
-import it.forgottenworld.fwblocker.config.Config;
-import it.forgottenworld.fwblocker.listener.PlayerListener;
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.command.BlockCommand;
+import it.filippocavallari.blocker.command.UnblockCommand;
+import it.filippocavallari.blocker.command.tabcompleters.BlockCommandTabCompleter;
+import it.filippocavallari.blocker.command.tabcompleters.UnblockCommandTabCompleter;
+import it.filippocavallari.blocker.config.Config;
+import it.filippocavallari.blocker.listener.PlayerListener;
+import it.filippocavallari.blocker.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.Objects;
 
-public final class FWBlocker extends JavaPlugin {
+public final class Blocker extends JavaPlugin {
 
     private Config config;
 

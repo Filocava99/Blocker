@@ -1,4 +1,4 @@
-package it.forgottenworld.fwblocker.config;
+package it.filippocavallari.blocker.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

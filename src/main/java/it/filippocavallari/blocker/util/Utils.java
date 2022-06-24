@@ -1,13 +1,12 @@
-package it.forgottenworld.fwblocker.util;
+package it.filippocavallari.blocker.util;
 
-import it.forgottenworld.fwblocker.FWBlocker;
-import it.forgottenworld.fwblocker.config.Config;
+import it.filippocavallari.blocker.config.Config;
+import it.filippocavallari.blocker.Blocker;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -21,9 +20,9 @@ import java.util.*;
 
 public class Utils {
 
-    private final FWBlocker instance;
+    private final Blocker instance;
 
-    public Utils(FWBlocker instance) {
+    public Utils(Blocker instance) {
         this.instance = instance;
     }
 
@@ -199,7 +198,7 @@ public class Utils {
 
     public void playBanEffect(Location location) {
         location.getWorld().playEffect(location, Effect.ANVIL_BREAK, 1);
-        location.getWorld().spawnParticle(Particle.BARRIER, location.add(0.5, 1.5, 0.5), 4);
+        location.getWorld().spawnParticle(Particle.BLOCK_MARKER, location.add(0.5, 1.5, 0.5), 4);
     }
 
     public List<String> getBannedItems() {

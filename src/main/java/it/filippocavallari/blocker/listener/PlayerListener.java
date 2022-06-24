@@ -1,7 +1,7 @@
-package it.forgottenworld.fwblocker.listener;
+package it.filippocavallari.blocker.listener;
 
-import it.forgottenworld.fwblocker.FWBlocker;
-import it.forgottenworld.fwblocker.util.Utils;
+import it.filippocavallari.blocker.util.Utils;
+import it.filippocavallari.blocker.Blocker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BrewingStand;
@@ -13,25 +13,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.Map;
 
 public class PlayerListener implements Listener {
 
-    private final FWBlocker instance;
+    private final Blocker instance;
     private final Utils utils;
 
-    public PlayerListener(FWBlocker instance) {
+    public PlayerListener(Blocker instance) {
         this.instance = instance;
         this.utils = new Utils(this.instance);
     }
