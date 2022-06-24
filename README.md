@@ -1,4 +1,4 @@
-# Flocker
+# Blocker
 A simple Spigot plugin to block specific items, enchants and potions.
 ## Usage
 `/block item` blocks the current held item  
