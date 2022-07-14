@@ -1,3 +1,4 @@
+[![Build status badge](https://raw.githubusercontent.com/Filocava99/Buildy/master/builds/Blocker/Blocker-build.svg)](https://filocava99.github.io/Buildy/builds/Blocker/Blocker.html)
 # Blocker
 A simple Spigot plugin to block specific items, enchants and potions.
 ## Usage
